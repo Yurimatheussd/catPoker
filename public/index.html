@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cat Planning Poker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="lobby-screen" class="screen">
+    <div class="lobby-box">
+      <div class="lobby-header">
+        <h1>🐱 Cat Planning Poker</h1>
+        <button id="create-room-btn" class="chip-small">+ Criar sala</button>
+      </div>
+      <p class="lobby-sub">Escolha uma mesa para entrar (máx. 5 salas)</p>
+      <div id="room-list" class="room-list"></div>
+      <div id="room-list-empty" class="room-list-empty">Nenhuma sala criada ainda. Crie a primeira!</div>
+    </div>
+  </div>
+
+  <div id="table-screen" class="screen hidden">
+    <header>
+      <h1 id="room-title">🐱 Cat Planning Poker</h1>
+      <div class="header-actions">
+        <button id="show-result-btn" class="ghost hidden">📊 Resultado</button>
+        <button id="reset-btn" class="ghost">🔄 Nova rodada</button>
+        <button id="leave-btn" class="ghost">Sair da mesa</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="spectators-bar" class="spectators-bar hidden"></div>
+
+      <div class="table-wrap">
+        <div id="seats" class="table-round">
+          <span class="suit suit-tl">🐾</span>
+          <span class="suit suit-tr">🐾</span>
+          <span class="suit suit-bl">🐾</span>
+          <span class="suit suit-br">🐾</span>
+          <div class="table-center">
+            <div class="table-logo">🐱 CAT<br />POKER</div>
+            <button id="reveal-btn" class="chip-btn chip-red">
+              <span class="chip-icon">🐾</span>
+              <span>Revelar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hand">
+        <div id="cards" class="cards"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="join-room-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close" data-close-modal="join-room-modal">✕</button>
+      <h2 id="join-room-title">Entrar na sala</h2>
+      <input id="join-name-input" type="text" placeholder="Seu nome" maxlength="20" autocomplete="off" />
+      <input id="join-password-input" type="password" placeholder="Senha da sala" autocomplete="off" />
+      <label class="spectator-row">
+        <input id="join-spectator-checkbox" type="checkbox" />
+        Entrar só como espectador (não vota, não tem cadeira)
+      </label>
+      <div id="join-room-error" class="modal-error"></div>
+      <button id="join-room-confirm-btn">Entrar</button>
+    </div>
+  </div>
+
+  <div id="create-room-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close" data-close-modal="create-room-modal">✕</button>
+      <h2>Criar nova sala</h2>
+      <input id="create-room-name-input" type="text" placeholder="Nome da sala" maxlength="30" autocomplete="off" />
+      <input id="create-room-password-input" type="password" placeholder="Senha da sala" autocomplete="off" />
+      <input id="create-name-input" type="text" placeholder="Seu nome" maxlength="20" autocomplete="off" />
+      <label class="spectator-row">
+        <input id="create-spectator-checkbox" type="checkbox" />
+        Entrar só como espectador (não vota, não tem cadeira)
+      </label>
+      <div id="create-room-error" class="modal-error"></div>
+      <button id="create-room-confirm-btn">Criar e entrar</button>
+    </div>
+  </div>
+
+  <div id="result-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button id="result-close" class="modal-close">✕</button>
+      <h2>Resultado</h2>
+      <div id="result-summary" class="result-summary"></div>
+      <div id="result-votes" class="result-votes"></div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
