@@ -29,4 +29,4 @@ npm install
 node server.js
 ```
 
-Acesse `http://localhost:3000`.
+Acesse `http://localhost:8080`.

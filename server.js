@@ -216,7 +216,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', leaveCurrentRoom);
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Planning Poker rodando em http://localhost:${PORT}`);
 });
