@@ -1,6 +1,6 @@
 # 🐱 Cat Planning Poker
 
-> ⚠️ **Aviso:** este é um projeto de **estudo**, criado para explorar e aprender sobre desenvolvimento de software com o auxílio de IA (Claude/Claude Code). Não é um produto pronto para produção — não há garantias de segurança, performance ou manutenção contínua.
+> Projeto de estudo, feito para aprender desenvolvimento com apoio de IA (Claude Code).
 
 Um Planning Poker simples e divertido, com tema de gatinhos 🐾, feito para times de scrum estimarem tarefas em tempo real.
 
@@ -30,7 +30,3 @@ node server.js
 ```
 
 Acesse `http://localhost:3000`.
-
-## Aviso final
-
-Este projeto foi desenvolvido com forte apoio de ferramentas de IA, como parte de um estudo pessoal sobre esse tipo de fluxo de trabalho. Sinta-se livre para explorar o código, mas use por sua conta e risco.
