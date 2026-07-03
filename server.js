@@ -9,9 +9,16 @@ const io = new Server(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const CARDS = ['0', '1', '2', '3', '5', '8', '13', '21', '?', '☕'];
+const FIB_SEQUENCE = ['0', '1', '2', '3', '5', '8', '13', '21', '34', '55', '89', '100'];
+const DEFAULT_MAX_CARD = '21';
 const MAX_ROOMS = 5;
 const INACTIVITY_MS = 30 * 60 * 1000;
+
+function buildDeck(maxCard) {
+  const idx = FIB_SEQUENCE.indexOf(String(maxCard));
+  const cutoff = idx === -1 ? FIB_SEQUENCE.indexOf(DEFAULT_MAX_CARD) : idx;
+  return [...FIB_SEQUENCE.slice(0, cutoff + 1), '?', '☕'];
+}
 
 // roomId -> { id, name, password, players: Map(socketId -> {name, vote, spectator, joinedAt}), revealed, lastActivity }
 const rooms = new Map();
@@ -54,7 +61,7 @@ function roomPublicState(room) {
   return {
     roomName: room.name,
     revealed: room.revealed,
-    cards: CARDS,
+    cards: room.cards,
     allVoted: players.length > 0 && players.every((p) => p.voted),
     players,
     spectators,
@@ -109,7 +116,7 @@ io.on('connection', (socket) => {
     return roomId ? rooms.get(roomId) : null;
   }
 
-  socket.on('create-room', ({ roomName, password, name, spectator } = {}) => {
+  socket.on('create-room', ({ roomName, password, name, spectator, maxCard } = {}) => {
     if (rooms.size >= MAX_ROOMS) {
       socket.emit('room-error', 'Limite de 5 salas atingido');
       return;
@@ -130,6 +137,7 @@ io.on('connection', (socket) => {
       password: String(password),
       players: new Map(),
       revealed: false,
+      cards: buildDeck(maxCard),
       createdAt: Date.now(),
       lastActivity: Date.now(),
     };
@@ -154,7 +162,7 @@ io.on('connection', (socket) => {
     const room = currentRoom();
     const player = room && room.players.get(socket.id);
     if (!room || !player || player.spectator || room.revealed) return;
-    if (!CARDS.includes(card)) return;
+    if (!room.cards.includes(card)) return;
     player.vote = card;
     touch(room);
     broadcastRoomState(room);

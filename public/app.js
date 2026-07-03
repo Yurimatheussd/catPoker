@@ -19,6 +19,7 @@ const createRoomModal = document.getElementById('create-room-modal');
 const createRoomNameInput = document.getElementById('create-room-name-input');
 const createRoomPasswordInput = document.getElementById('create-room-password-input');
 const createNameInput = document.getElementById('create-name-input');
+const createMaxCardSelect = document.getElementById('create-max-card-select');
 const createSpectatorCheckbox = document.getElementById('create-spectator-checkbox');
 const createRoomError = document.getElementById('create-room-error');
 const createRoomConfirmBtn = document.getElementById('create-room-confirm-btn');
@@ -83,6 +84,7 @@ createRoomBtn.addEventListener('click', () => {
   createRoomNameInput.value = '';
   createRoomPasswordInput.value = '';
   createNameInput.value = '';
+  createMaxCardSelect.value = '21';
   createSpectatorCheckbox.checked = false;
   showModal(createRoomModal);
 });
@@ -91,11 +93,12 @@ createRoomConfirmBtn.addEventListener('click', () => {
   const roomName = createRoomNameInput.value.trim();
   const password = createRoomPasswordInput.value;
   const name = createNameInput.value.trim();
+  const maxCard = createMaxCardSelect.value;
   if (!roomName) { createRoomError.textContent = 'Informe um nome para a sala'; return; }
   if (!password) { createRoomError.textContent = 'Informe uma senha para a sala'; return; }
   if (!name) { createRoomError.textContent = 'Informe seu nome'; return; }
   createRoomError.textContent = '';
-  socket.emit('create-room', { roomName, password, name, spectator: createSpectatorCheckbox.checked });
+  socket.emit('create-room', { roomName, password, name, maxCard, spectator: createSpectatorCheckbox.checked });
 });
 
 function openJoinRoomModal(room) {

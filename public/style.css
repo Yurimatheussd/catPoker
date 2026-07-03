@@ -132,6 +132,26 @@ body {
   padding: 12px 0;
 }
 
+.create-max-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  font-size: 13px;
+  color: #9fb0c0;
+  margin-bottom: 12px;
+}
+
+.create-max-card-row select {
+  background: #1b2735;
+  color: #e8eef4;
+  border: 1px solid #2c3b4c;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
 .spectator-row {
   display: flex;
   align-items: flex-start;

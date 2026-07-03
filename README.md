@@ -10,6 +10,7 @@ Um Planning Poker simples e divertido, com tema de gatinhos 🐾, feito para tim
 - Cada sala tem nome e senha próprios
 - Mesa redonda com cadeiras que aparecem conforme as pessoas entram
 - Baralho estilo carta de poker (com fotos de gatinhos no centro 🐱)
+- Carta mais alta configurável ao criar a sala (21, 34, 55, 89 ou 100)
 - Modo espectador (acompanha sem votar e sem cadeira)
 - Resultado da rodada em modal, com média e detecção de consenso
 - "Jogar bolinha de papel" nos colegas de mesa, por diversão
