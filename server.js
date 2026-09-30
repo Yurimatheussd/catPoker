@@ -15,9 +15,12 @@ const MAX_ROOMS = 5;
 const INACTIVITY_MS = 30 * 60 * 1000;
 
 function buildDeck(maxCard) {
-  const idx = FIB_SEQUENCE.indexOf(String(maxCard));
-  const cutoff = idx === -1 ? FIB_SEQUENCE.indexOf(DEFAULT_MAX_CARD) : idx;
-  return [...FIB_SEQUENCE.slice(0, cutoff + 1), '?', '☕'];
+  const sequence = ['89', '100'].includes(String(maxCard))
+    ? [...FIB_SEQUENCE.slice(0, FIB_SEQUENCE.indexOf('89')), '60', '70', '80', '89', '90', '100']
+    : FIB_SEQUENCE;
+  const idx = sequence.indexOf(String(maxCard));
+  const cutoff = idx === -1 ? sequence.indexOf(DEFAULT_MAX_CARD) : idx;
+  return [...sequence.slice(0, cutoff + 1), '?', '☕'];
 }
 
 // roomId -> { id, name, password, players: Map(socketId -> {name, vote, spectator, joinedAt}), revealed, lastActivity }
