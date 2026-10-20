@@ -23,6 +23,7 @@
     <header>
       <h1 id="room-title">🐱 Cat Planning Poker</h1>
       <div class="header-actions">
+        <button id="analytic-help-header-btn" class="ghost help-btn hidden" title="Como funciona o cálculo?" aria-label="Como funciona o cálculo?">?</button>
         <button id="show-result-btn" class="ghost hidden">📊 Resultado</button>
         <button id="reset-btn" class="ghost">🔄 Nova rodada</button>
         <button id="leave-btn" class="ghost">Sair da mesa</button>
@@ -50,6 +51,7 @@
 
       <div class="hand">
         <div id="cards" class="cards"></div>
+        <div id="analytic-panel" class="analytic-panel hidden"></div>
       </div>
     </main>
   </div>
@@ -77,6 +79,17 @@
       <input id="create-room-password-input" type="password" placeholder="Senha da sala" autocomplete="off" />
       <input id="create-name-input" type="text" placeholder="Seu nome" maxlength="20" autocomplete="off" />
       <label class="create-max-card-row">
+        Modo de votação
+        <select id="create-mode-select">
+          <option value="classic">Clássico (cartas Fibonacci)</option>
+          <option value="analytic">Analítico (5 critérios, notas 0 a 5)</option>
+        </select>
+      </label>
+      <p id="create-mode-hint" class="create-mode-hint hidden">
+        Cada participante avalia complexidade, esforço, incerteza, dependências e risco.
+        O Cat Poker calcula os Story Points automaticamente.
+      </p>
+      <label id="create-max-card-row" class="create-max-card-row">
         Carta mais alta
         <select id="create-max-card-select">
           <option value="21">21 (padrão)</option>
@@ -96,15 +109,52 @@
   </div>
 
   <div id="result-modal" class="modal-overlay hidden">
-    <div class="modal-box">
+    <div id="result-box" class="modal-box">
       <button id="result-close" class="modal-close">✕</button>
       <h2>Resultado</h2>
       <div id="result-summary" class="result-summary"></div>
       <div id="result-votes" class="result-votes"></div>
+      <div id="result-analytic" class="result-analytic hidden"></div>
+    </div>
+  </div>
+
+  <div id="help-modal" class="modal-overlay hidden">
+    <div class="modal-box modal-wide help-box">
+      <button class="modal-close" data-close-modal="help-modal">✕</button>
+      <h2>Como funciona o cálculo do Cat Poker?</h2>
+      <ol class="help-steps">
+        <li>Cada participante atribui notas de <b>0 a 5</b> para cinco critérios: complexidade técnica, esforço, incerteza, dependências e risco.</li>
+        <li>O sistema ordena as cinco notas e encontra a <b>mediana</b>, ou seja, a nota central.</li>
+        <li>Calcula a <b>média das medianas</b> dos participantes.</li>
+        <li>Converte essa média para uma das pontuações Fibonacci: <b>1, 2, 3, 5, 8 ou 13</b>.</li>
+        <li>O gráfico apresenta a <b>média das notas de cada critério</b>, ajudando a entender onde a equipe percebe maior dificuldade. Ele não entra no cálculo dos pontos.</li>
+      </ol>
+      <div class="help-example">
+        <div class="help-example-title">🐾 Exemplo</div>
+        <p>Uma pessoa deu as notas 4, 3, 5, 4 e 4. Ordenando: 3, 4, <b>4</b>, 4, 5 → mediana <b>4</b>.</p>
+        <p>Cinco participantes tiveram medianas 4, 4, 4, 3 e 4.</p>
+        <p>Média = (4 + 4 + 4 + 3 + 4) / 5 = <b>3,8</b>.</p>
+        <p>Resultado Fibonacci = <b>8 pontos</b>.</p>
+      </div>
+      <table class="help-table">
+        <thead>
+          <tr><th>Média das medianas</th><th>Fibonacci</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0 a menos de 0,833…</td><td>1</td></tr>
+          <tr><td>0,833… a menos de 1,666…</td><td>2</td></tr>
+          <tr><td>1,666… a menos de 2,5</td><td>3</td></tr>
+          <tr><td>2,5 a menos de 3,333…</td><td>5</td></tr>
+          <tr><td>3,333… a menos de 4,166…</td><td>8</td></tr>
+          <tr><td>4,166… a 5</td><td>13</td></tr>
+        </tbody>
+      </table>
+      <p class="help-footnote">Os limites são múltiplos exatos de 5/6 e a média não é arredondada antes da conversão.</p>
     </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src="analytic.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
