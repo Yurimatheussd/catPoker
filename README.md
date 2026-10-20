@@ -17,7 +17,7 @@ Um Planning Poker simples e divertido, com tema de gatinhos 🐾, feito para tim
 - Reconexão automática: quem cai volta para a mesa sem perder o voto da rodada (se a sala ainda existir)
 - Modo espectador (acompanha sem votar e sem cadeira)
 - Resultado da rodada em modal, com média e detecção de consenso
-- "Jogar bolinha de papel" nos colegas de mesa, por diversão
+- "Jogar bolinha de papel" nos colegas de mesa, por diversão (espectadores também jogam: a bolinha vem de fora da tela)
 - Salas fecham automaticamente quando ficam vazias ou após 30 minutos sem atividade
 
 ## Stack

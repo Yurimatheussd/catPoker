@@ -485,22 +485,40 @@ function showToast(text) {
 function throwPaperBall(fromId, toId) {
   const fromAvatar = seatsEl.querySelector(`[data-player-id="${fromId}"] .avatar`);
   const toAvatar = seatsEl.querySelector(`[data-player-id="${toId}"] .avatar`);
-  if (!fromAvatar || !toAvatar) return;
+  if (!toAvatar) return;
 
-  const fromRect = fromAvatar.getBoundingClientRect();
   const toRect = toAvatar.getBoundingClientRect();
+  const toX = toRect.left + toRect.width / 2 - 8;
+  const toY = toRect.top + toRect.height / 2 - 8;
+
+  // Espectadores não têm cadeira: a bolinha entra por uma borda aleatória, de fora da tela.
+  const offScreen = !fromAvatar;
+  let fromX;
+  let fromY;
+  if (offScreen) {
+    const margin = 40;
+    const side = Math.floor(Math.random() * 4);
+    const alongX = Math.random() * window.innerWidth;
+    const alongY = Math.random() * window.innerHeight;
+    fromX = side === 0 ? -margin : side === 1 ? window.innerWidth + margin : alongX;
+    fromY = side === 2 ? -margin : side === 3 ? window.innerHeight + margin : alongY;
+  } else {
+    const fromRect = fromAvatar.getBoundingClientRect();
+    fromX = fromRect.left + fromRect.width / 2 - 8;
+    fromY = fromRect.top + fromRect.height / 2 - 8;
+  }
 
   const ball = document.createElement('div');
-  ball.className = 'paper-ball';
-  ball.style.left = fromRect.left + fromRect.width / 2 - 8 + 'px';
-  ball.style.top = fromRect.top + fromRect.height / 2 - 8 + 'px';
+  ball.className = 'paper-ball' + (offScreen ? ' from-outside' : '');
+  ball.style.left = fromX + 'px';
+  ball.style.top = fromY + 'px';
   document.body.appendChild(ball);
 
-  const dx = toRect.left - fromRect.left;
-  const dy = toRect.top - fromRect.top;
+  const dx = toX - fromX;
+  const dy = toY - fromY;
 
   requestAnimationFrame(() => {
-    ball.style.transform = `translate(${dx}px, ${dy}px) rotate(540deg)`;
+    ball.style.transform = `translate(${dx}px, ${dy}px) rotate(${offScreen ? 900 : 540}deg)`;
   });
 
   setTimeout(() => {
@@ -510,7 +528,7 @@ function throwPaperBall(fromId, toId) {
       toSeat.classList.add('hit');
       setTimeout(() => toSeat.classList.remove('hit'), 400);
     }
-  }, 550);
+  }, offScreen ? 850 : 550);
 }
 
 function updateResultModal(state) {

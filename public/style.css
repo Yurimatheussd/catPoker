@@ -504,6 +504,10 @@ button:disabled {
   transform: translate(0, 0) rotate(0deg);
 }
 
+.paper-ball.from-outside {
+  transition-duration: 0.85s;
+}
+
 .toast {
   position: fixed;
   top: 20px;
