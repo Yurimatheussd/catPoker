@@ -95,7 +95,7 @@ test('modo analítico: progresso visível, notas ocultas até revelar, cálculo 
   // não dá para revelar com avaliação incompleta
   ana.emit('reveal');
   score(ana, [4, 3, 5, 4, 4]);
-  score(bia, [3, 4, 3, 3, 5]);
+  score(bia, [5, 4, 1, 1, 2]);
   state = await waitState(spec, (s) => s.allVoted);
   assert.equal(state.revealed, false);
   assert.ok(state.players.every((p) => p.scores === null && p.vote === null && p.progress === 5));
@@ -110,6 +110,7 @@ test('modo analítico: progresso visível, notas ocultas até revelar, cálculo 
   anaPublic = state.players.find((p) => p.name === 'Ana');
   assert.deepEqual(anaPublic.scores, [4, 3, 5, 4, 4]);
   assert.equal(anaPublic.vote, '4');
+  assert.deepEqual(state.players.find((p) => p.name === 'Bia').scores, [5, 4, 1, 1, 2]);
   assert.equal(state.players.find((p) => p.name === 'Bia').vote, '3');
 
   // notas não mudam depois de revelar

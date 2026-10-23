@@ -81,7 +81,7 @@
       <label class="create-max-card-row">
         Modo de votação
         <select id="create-mode-select">
-          <option value="classic">Clássico (cartas Fibonacci)</option>
+          <option value="classic">Clássico (modelo antigo)</option>
           <option value="analytic">Analítico (5 critérios, notas 0 a 5)</option>
         </select>
       </label>
@@ -124,21 +124,21 @@
       <h2>Como funciona o cálculo do Cat Poker?</h2>
       <ol class="help-steps">
         <li>Cada participante atribui notas de <b>0 a 5</b> para cinco critérios: complexidade técnica, esforço, incerteza, dependências e risco.</li>
-        <li>O sistema ordena as cinco notas e encontra a <b>mediana</b>, ou seja, a nota central.</li>
-        <li>Calcula a <b>média das medianas</b> dos participantes.</li>
+        <li>O sistema soma as cinco notas, divide por cinco e <b>arredonda a média para o inteiro mais próximo</b>.</li>
+        <li>Calcula a <b>média das notas individuais arredondadas</b> dos participantes.</li>
         <li>Converte essa média para uma das pontuações Fibonacci: <b>1, 2, 3, 5, 8 ou 13</b>.</li>
         <li>O gráfico apresenta a <b>média das notas de cada critério</b>, ajudando a entender onde a equipe percebe maior dificuldade. Ele não entra no cálculo dos pontos.</li>
       </ol>
       <div class="help-example">
         <div class="help-example-title">🐾 Exemplo</div>
-        <p>Uma pessoa deu as notas 4, 3, 5, 4 e 4. Ordenando: 3, 4, <b>4</b>, 4, 5 → mediana <b>4</b>.</p>
-        <p>Cinco participantes tiveram medianas 4, 4, 4, 3 e 4.</p>
+        <p>Uma pessoa deu as notas 5, 4, 1, 1 e 2. Média = 13 / 5 = <b>2,6</b> → média arredondada <b>3</b>.</p>
+        <p>Cinco participantes tiveram médias arredondadas 4, 4, 4, 3 e 4.</p>
         <p>Média = (4 + 4 + 4 + 3 + 4) / 5 = <b>3,8</b>.</p>
         <p>Resultado Fibonacci = <b>8 pontos</b>.</p>
       </div>
       <table class="help-table">
         <thead>
-          <tr><th>Média das medianas</th><th>Fibonacci</th></tr>
+          <tr><th>Média das notas individuais</th><th>Fibonacci</th></tr>
         </thead>
         <tbody>
           <tr><td>0 a menos de 0,833…</td><td>1</td></tr>
@@ -149,7 +149,7 @@
           <tr><td>4,166… a 5</td><td>13</td></tr>
         </tbody>
       </table>
-      <p class="help-footnote">Os limites são múltiplos exatos de 5/6 e a média não é arredondada antes da conversão.</p>
+      <p class="help-footnote">Os limites são múltiplos exatos de 5/6 e a média coletiva não recebe um novo arredondamento antes da conversão.</p>
     </div>
   </div>
 

@@ -25,36 +25,34 @@ test('critérios: cinco critérios com legenda de 0 a 5', () => {
   assert.match(A.CRITERIA[1].note, /horas/);
 });
 
-test('mediana: exemplo do enunciado (4, 3, 5, 4, 4) = 4', () => {
-  assert.equal(A.median([4, 3, 5, 4, 4]), 4);
+test('média arredondada: exemplo do enunciado (4, 3, 5, 4, 4) = 4', () => {
+  assert.equal(A.roundedAverage([4, 3, 5, 4, 4]), 4);
 });
 
-test('mediana: todas as combinações de notas entre 0 e 5', () => {
+test('média arredondada: todas as combinações de notas entre 0 e 5', () => {
   let count = 0;
   for (const scores of allScoreLists()) {
-    const sorted = scores.slice().sort((a, b) => a - b);
-    const m = A.median(scores);
-    assert.equal(m, sorted[2]);
-    // ao menos 3 notas <= mediana e ao menos 3 notas >= mediana
-    assert.ok(scores.filter((s) => s <= m).length >= 3);
-    assert.ok(scores.filter((s) => s >= m).length >= 3);
+    const total = scores.reduce((sum, score) => sum + score, 0);
+    const m = A.roundedAverage(scores);
+    assert.ok(Math.abs(m - total / 5) < 0.5);
+    assert.ok(Number.isInteger(m) && m >= 0 && m <= 5);
     count++;
   }
   assert.equal(count, 7776);
 });
 
-test('mediana: não muda a ordem original das notas', () => {
+test('média arredondada: não muda a ordem original das notas', () => {
   const scores = [5, 0, 3, 1, 4];
-  A.median(scores);
+  A.roundedAverage(scores);
   assert.deepEqual(scores, [5, 0, 3, 1, 4]);
 });
 
-test('mediana: avaliação incompleta ou inválida retorna null', () => {
-  assert.equal(A.median([1, 2, null, 4, 5]), null);
-  assert.equal(A.median([1, 2, 3, 4]), null);
-  assert.equal(A.median([1, 2, 3, 4, 6]), null);
-  assert.equal(A.median([1, 2, 3, 4, 2.5]), null);
-  assert.equal(A.median(null), null);
+test('média arredondada: avaliação incompleta ou inválida retorna null', () => {
+  assert.equal(A.roundedAverage([1, 2, null, 4, 5]), null);
+  assert.equal(A.roundedAverage([1, 2, 3, 4]), null);
+  assert.equal(A.roundedAverage([1, 2, 3, 4, 6]), null);
+  assert.equal(A.roundedAverage([1, 2, 3, 4, 2.5]), null);
+  assert.equal(A.roundedAverage(null), null);
 });
 
 test('fibonacci: faixas e limites exatos em múltiplos de 5/6', () => {
@@ -98,7 +96,7 @@ test('fibonacci: fração e média concordam com a definição para até 12 part
   }
 });
 
-test('summarize: exemplo do enunciado (medianas 4, 4, 4, 3, 4 → 3,8 → 8 SP)', () => {
+test('summarize: exemplo do enunciado (médias arredondadas 4, 4, 4, 4, 4 → 4 → 8 SP)', () => {
   const lists = [
     [4, 3, 5, 4, 4],
     [4, 4, 4, 3, 5],
@@ -107,13 +105,13 @@ test('summarize: exemplo do enunciado (medianas 4, 4, 4, 3, 4 → 3,8 → 8 SP)'
     [3, 4, 3, 4, 5],
   ];
   const result = A.summarize(lists);
-  assert.deepEqual(result.medians, [4, 4, 4, 3, 4]);
+  assert.deepEqual(result.averages, [4, 4, 4, 4, 4]);
   assert.equal(result.count, 5);
-  assert.ok(Math.abs(result.average - 3.8) < 1e-12);
+  assert.ok(Math.abs(result.average - 4) < 1e-12);
   assert.equal(result.fibonacci, 8);
 });
 
-test('summarize: média aritmética de cada critério (não a média das medianas)', () => {
+test('summarize: média aritmética de cada critério (não a média das médias arredondadas)', () => {
   const lists = [
     [4, 3, 5, 4, 4],
     [4, 4, 4, 3, 5],
@@ -180,4 +178,14 @@ test('formatNumber usa vírgula decimal', () => {
   assert.equal(A.formatAverage(3.75), '3,75');
   assert.equal(A.formatAverage(11 / 3), '3,67');
   assert.equal(A.formatAverage(4), '4');
+});
+
+
+test('média arredondada: exemplo do usuário e arredondamento nos dois sentidos', () => {
+  assert.equal(A.roundedAverage([5, 4, 1, 1, 2]), 3);
+  assert.equal(A.roundedAverage([5, 3, 1, 1, 2]), 2);
+  const result = A.summarize([[5, 4, 1, 1, 2]]);
+  assert.deepEqual(result.averages, [3]);
+  assert.equal(result.average, 3);
+  assert.equal(result.fibonacci, 5);
 });

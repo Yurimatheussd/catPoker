@@ -780,7 +780,7 @@ function renderAnalyticSummary(state) {
   analyticPanel.appendChild(chips);
 
   if (complete) {
-    analyticPanel.appendChild(el('div', 'an-median', `Sua mediana: ${A.median(myScores)}`));
+    analyticPanel.appendChild(el('div', 'an-median', `Sua média arredondada: ${A.roundedAverage(myScores)}`));
   }
 }
 
@@ -809,7 +809,7 @@ function renderAnalyticResult(state) {
   value.appendChild(helpBtn);
   points.appendChild(value);
   points.appendChild(el('span', 'an-points-sub',
-    `Média das medianas: ${A.formatAverage(result.average)} · ${result.count} participante${result.count === 1 ? '' : 's'}`));
+    `Média das notas individuais: ${A.formatAverage(result.average)} · ${result.count} participante${result.count === 1 ? '' : 's'}`));
   resultSummary.appendChild(points);
 
   resultAnalytic.appendChild(renderFinalEstimate(state, result));
@@ -908,7 +908,7 @@ function renderIndividualVotes(state, result) {
     });
     const summary = el('summary');
     summary.appendChild(el('span', 'an-vote-name', p.name + (p.id === myId ? ' (você)' : '')));
-    summary.appendChild(el('span', 'an-vote-median', complete ? `mediana ${A.median(p.scores)}` : 'avaliação incompleta'));
+    summary.appendChild(el('span', 'an-vote-median', complete ? `média arredondada ${A.roundedAverage(p.scores)}` : 'avaliação incompleta'));
     item.appendChild(summary);
     if (complete) {
       const scores = el('div', 'an-vote-scores');

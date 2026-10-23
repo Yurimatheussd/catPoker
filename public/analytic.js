@@ -113,11 +113,10 @@
     return Array.isArray(scores) && scores.length === CRITERIA_COUNT && scores.every(isValidScore);
   }
 
-  // Mediana das cinco notas de um participante (a nota central depois de ordenar).
-  function median(scores) {
+  // Média das cinco notas de um participante, arredondada para o inteiro mais próximo.
+  function roundedAverage(scores) {
     if (!isComplete(scores)) return null;
-    const sorted = scores.slice().sort((a, b) => a - b);
-    return sorted[Math.floor(sorted.length / 2)];
+    return Math.round(scores.reduce((sum, score) => sum + score, 0) / CRITERIA_COUNT);
   }
 
   // Converte uma média (0 a 5) em Fibonacci. Faixas com limites exatos em múltiplos de 5/6:
@@ -130,7 +129,7 @@
   }
 
   // Mesma conversão, mas a partir da fração soma/quantidade em aritmética inteira,
-  // sem nenhum arredondamento da média (as medianas são sempre inteiras).
+  // sem nenhum arredondamento da média (as médias individuais arredondadas são sempre inteiras).
   function fibonacciFromRatio(sum, count) {
     if (!count) return null;
     let index = 0;
@@ -141,9 +140,9 @@
   // Resultado coletivo a partir da lista de avaliações (arrays de 5 notas). Avaliações incompletas são ignoradas.
   function summarize(scoreLists) {
     const valid = (scoreLists || []).filter(isComplete);
-    const medians = valid.map(median);
+    const averages = valid.map(roundedAverage);
     const count = valid.length;
-    const sum = medians.reduce((a, b) => a + b, 0);
+    const sum = averages.reduce((a, b) => a + b, 0);
     const criteria = CRITERIA.map((criterion, i) => {
       const values = valid.map((scores) => scores[i]);
       const total = values.reduce((a, b) => a + b, 0);
@@ -164,7 +163,7 @@
     });
     return {
       count,
-      medians,
+      averages,
       average: count ? sum / count : null,
       fibonacci: fibonacciFromRatio(sum, count),
       criteria,
@@ -201,7 +200,7 @@
     emptyScores,
     answeredCount,
     isComplete,
-    median,
+    roundedAverage,
     fibonacciFromAverage,
     fibonacciFromRatio,
     summarize,

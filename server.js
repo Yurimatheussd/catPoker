@@ -31,7 +31,7 @@ function buildDeck(maxCard) {
 // roomId -> { id, name, password, mode, round, finalEstimate, revealed, lastActivity,
 //   players: Map(socketId -> {name, vote, scores, spectator, clientId, joinedAt}),
 //   departed: Map(clientId -> {vote, scores, round, leftAt}) }
-// No modo analítico, `vote` guarda a mediana individual (string) assim que as cinco notas são dadas.
+// No modo analítico, `vote` guarda a média individual arredondada (string) assim que as cinco notas são dadas.
 const rooms = new Map();
 let roomCounter = 0;
 
@@ -233,8 +233,8 @@ io.on('connection', (socket) => {
     if (!Number.isInteger(index) || index < 0 || index >= analytic.CRITERIA_COUNT) return;
     if (!analytic.isValidScore(value)) return;
     player.scores[index] = value;
-    const median = analytic.median(player.scores);
-    player.vote = median === null ? null : String(median);
+    const average = analytic.roundedAverage(player.scores);
+    player.vote = average === null ? null : String(average);
     touch(room);
     broadcastRoomState(room);
   });
